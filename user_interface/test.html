@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+        <script>
+        
+
+        function mycallback(data)
+        {
+                var $secondChoice = $("#second-choice");
+                $secondChoice.empty();
+                for(var i = 0; i < data.length; ++i)
+                {
+                    $secondChoice.append('<option value= "'+ data[i].id +'" onclick="load_school_data(this.value);">' + data[i].name + "</option>");
+                }
+        }
+
+        function school_data_callback(data)
+        {
+        
+        }
+
+
+        function load_school_data(school_id)
+        {
+            var url = 'http://localhost:5002/school/'+ school_id +'?callback=?';
+            $.getJSON(url, null, school_data_callback);
+        }
+
+        function get_matching_schools()
+        {
+            var v = $("#school_name").val();
+            if(v.length > 0)
+            {
+                var url = 'http://localhost:5002/matches/'+ v +'?callback=?'
+                $.getJSON(url, null, mycallback);
+            }
+        }
+        </script>
+    </head>   
+<body>
+    <span>
+    <input type="text" id="school_name" onkeyup='get_matching_schools()'><br>
+    <select size=10 id='second-choice'>
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+    </select> 
+    </span>
+
+    <div id='school_data'>
+
+        
+    </div>
+</body>
+</html>
