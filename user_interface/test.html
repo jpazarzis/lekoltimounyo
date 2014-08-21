@@ -19,7 +19,36 @@
 
         function school_data_callback(data)
         {
-        
+            /* 
+            we have received the detailed data for a specific school in
+            the form of a json document, where the key represents the field
+            name while the value its field value. 
+
+            Now let's go ahead and present this data to the user by creating
+            an HTML table consisting of two columns (key - value)
+            */
+
+            $('#school_data').html('');
+            var table = document.createElement("table");
+
+            var x = '';
+            $.each(data, function(field_name, field_value) {
+
+                var row = document.createElement("tr");
+
+                var field_name_cell = document.createElement("td");
+                field_name_cell.appendChild(document.createTextNode(field_name));
+
+                var field_value_cell = document.createElement("td");
+                field_value_cell.appendChild(document.createTextNode(field_value));
+
+                row.appendChild(field_name_cell);
+                row.appendChild(field_value_cell);
+
+                table.appendChild(row);
+            });
+
+            $('#school_data').append(table);
         }
 
 
