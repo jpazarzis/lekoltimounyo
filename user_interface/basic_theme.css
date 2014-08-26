@@ -1,0 +1,116 @@
+table
+{
+    font-family: verdana,arial,sans-serif;
+    font-size:15px;
+    color:#333333;
+    border-collapse: collapse;
+    border: 1px solid black;
+    line-height: 25px;
+}
+
+table td
+{
+    border: 1px solid black;
+}
+
+
+
+.title
+{
+    float:left;
+    font-family: verdana,arial,sans-serif;
+    font-size:14px;
+    color:#CCFFFF;
+    border: 0px ;
+    display: inline-block;
+    background-color:#006699;
+    text-align:left;
+    width:100%;
+    margin-bottom:18px;
+    font-weight:bold;
+}
+
+#find_school
+{
+    margin-left:24px;
+    padding: 25px 50px;
+    margin-right:auto;
+    margin-bottom:8px;
+    border: 1px solid black;
+}
+
+#display_schools 
+{
+    color:gray;
+    margin-top:12px;
+    margin-left:2px;
+    margin-bottom:32px;
+}
+
+.school_detail
+{
+    margin-top:12px;
+    margin-bottom:32px;
+}
+
+
+#display_schools a
+{
+    font-family: verdana,arial,sans-serif;
+    font-size:22px;
+    color:#66CCFF;
+    text-decoration: none;
+    
+}
+
+#find_school h2
+{
+    color:#006699;
+}
+
+#find_school input
+{
+    margin-top:12px;
+    color:gray;
+    height: 32px;
+}
+
+.radio_options
+{
+    font-family: verdana,arial,sans-serif;
+    font-size:14px;
+    color:blue;
+}
+
+.counter
+{
+    color:#006699;
+    background-color:#CCFFFF;
+    display: inline-block;
+    width: 60px;
+    text-align:center;
+}
+.container
+{
+    float:left;
+    display: inline-block;
+}
+
+body {
+    /*width: 820px;*/
+    background-color:white;
+    margin-left:auto;
+    margin-right:auto;
+}
+.wrapper {
+    overflow: auto;
+    margin: auto;
+    width: 820px;
+}
+.group_div
+{
+    border: 1px solid black;
+    overflow:hidden;
+    /*background-image:url('background.jpeg');*/
+    background-color:blue;
+}

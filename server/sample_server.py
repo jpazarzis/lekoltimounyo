@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import g
 import MySQLdb
 import json
 import ConfigParser
@@ -18,7 +19,7 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 
-select_sql = '''select school_id, school_name from schools where school_name like '{}%' LIMIT 30'''
+select_sql = '''select school_id, school_name, grouping, departement , community , city, address, telephone from schools where school_name like '{}%' LIMIT 30'''
 
 select_school_sql = '''select grouping, departement , community , city, neighborhood, grant_suggested_by, school_name,
     director_name, address, telephone, year1_effective, year2_effective, year3_effective,
@@ -36,12 +37,18 @@ USER = config.get('dbsettings', 'USER')
 PASSWORD = config.get('dbsettings', 'PASSWORD') 
 DATABASE = config.get('dbsettings', 'DATABASE') 
 
-db = MySQLdb.connect(host=HOSTNAME, user=USER, passwd=PASSWORD, db=DATABASE)
 
+@app.before_request
+def db_connect():
+    g.db_conn = MySQLdb.connect(host=HOSTNAME, user=USER, passwd=PASSWORD, db=DATABASE)
+
+@app.teardown_request
+def db_disconnect(exception=None):
+    g.db_conn.close()
 
 @app.route('/school/<school_id>')
 def get_school_data(school_id):
-    cur = db.cursor()
+    cur = g.db_conn.cursor()
     sql = select_school_sql.format(school_id)
     logger.info("executing: {0}".format(sql))
     cur.execute(sql)
@@ -56,13 +63,13 @@ def get_school_data(school_id):
 
 @app.route('/matches/<school_name>')
 def get_matching_schools(school_name):
-    cur = db.cursor()
+    cur = g.db_conn.cursor()
     sql = select_sql.format(school_name)
     logger.info("executing: {0}".format(sql))
     cur.execute(sql)
     schools = []
     for row in cur.fetchall():
-        schools.append({'id': row[0], 'name': row[1]})
+        schools.append({'id': row[0], 'name': row[1] , 'grouping': row[2], 'departement': row[3], 'community': row[4], 'city': row[5], 'address': row[6], 'telephone': row[7] })
 
     return 'mycallback( {0} )'.format(json.dumps(schools))
 
@@ -73,7 +80,6 @@ def handle_invalid_usage(error):
 @app.route('/foo')
 def get_foo():
     raise Exception('testing exception throwing')
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
