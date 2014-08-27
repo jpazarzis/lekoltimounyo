@@ -6,6 +6,12 @@
 <script>
 
     var server_name = "localhost";
+    var selected_department = '';
+
+    function format_key_value(key, value)
+    {
+        return '<span>' + key + '</span> <b>' + value + '</b> </br>';
+    }
 
     function mycallback(data)
     {
@@ -15,78 +21,99 @@
         {
             var div = '<div class="school_detail">';
             div += '<a href="">' + data[i].name + '</a></br>';
-            div += 'Grouping: ' + '<b>' +data[i].grouping + '</b><br>';
-            div += 'Address: ' + '<b>' + data[i].address + '</b><br>';
-            div += 'Department: ' + '<b>' +data[i].department + '</b><br>';
-            div += 'Community: ' + '<b>' +data[i].community + '</b><br>';
-            div += 'City: ' + '<b>' +data[i].city + '</b><br>';
-            div += 'Telephone: ' + '<b>' +data[i].telephone + '</b><br>';
+            div +=  format_key_value("Grouping", data[i].grouping);
+            div +=  format_key_value("Address", data[i].address);
+            div +=  format_key_value("Department", data[i].department);
+            div +=  format_key_value("Community", data[i].community);
+            div +=  format_key_value("City", data[i].city);
+            div +=  format_key_value("Telephone", data[i].telephone);
+            div +=  format_key_value("Neighborhood", data[i].neighborhood);
+            div +=  format_key_value("Suggested by", data[i].grant_suggested_by);
+            div +=  format_key_value("Director", data[i].director_name);
+            div += "<h4>Effectivity</h4>";
+            div +=  format_key_value("Year 1", data[i].year1_effective);
+            div +=  format_key_value("Year 2", data[i].year2_effective);
+            div +=  format_key_value("Year 3", data[i].year3_effective);
+            div +=  format_key_value("Year 4", data[i].year4_effective);
+            div +=  format_key_value("Year 5", data[i].year5_effective);
+            div +=  format_key_value("Year 6", data[i].year6_effective);
+            div +=  format_key_value("Unknown", data[i].unknown_effective);
+            div +=  "</br>";
+            div +=  format_key_value("Total Effective", data[i].total_effective);
             div += '</div>';
             $schools_div.append(div);
         }
     }
 
-    function school_data_callback(data)
-    {
-        /* 
-        we have received the detailed data for a specific school in
-        the form of a json document, where the key represents the field
-        name while the value its field value. 
-
-        Now let's go ahead and present this data to the user by creating
-        an HTML table consisting of two columns (key - value)
-        */
-
-        $('#school_data').html('');
-        var table = document.createElement("table");
-
-        var x = '';
-        $.each(data, function(field_name, field_value) {
-
-            var row = document.createElement("tr");
-
-            var field_name_cell = document.createElement("td");
-            field_name_cell.appendChild(document.createTextNode(field_name));
-
-            var field_value_cell = document.createElement("td");
-            field_value_cell.appendChild(document.createTextNode(field_value));
-
-            row.appendChild(field_name_cell);
-            row.appendChild(field_value_cell);
-
-            table.appendChild(row);
-        });
-
-        $('#school_data').append(table);
-    }
-
-    function load_school_data(school_id)
-    {
-        var url = 'http://' + server_name + ':5002/school/'+ school_id +'?callback=?';
-        $.getJSON(url, null, school_data_callback);
-    }
 
     function get_matching_schools()
     {
-        var v = $("#school_name").val();
-        if(v.length > 0)
+        var parms = '';
+        var school_name = $("#school_name").val();
+
+        if(school_name.length > 0)
+            parms = '?school_name='+ school_name;
+
+        if (selected_department.length > 0)
         {
-            var url = 'http://' + server_name + ':5002/matches/'+ v +'?callback=?'
-            $.getJSON(url, null, mycallback);
+            if(parms.length > 0)
+                parms += '&department=' + selected_department;
+            else
+                parms += '?department=' + selected_department;
         }
+
+        if(parms.length > 0)
+            parms += '&callback=?';
+        else
+            parms += '?callback=?';
+
+        var url = 'http://' + server_name + ':5002/matches' + parms;
+
+        $.getJSON(url, null, mycallback);
     }
+
+    function select_department(department)
+    {
+        selected_department = department;
+        get_matching_schools();
+    }
+
+    function departments_data_callback(data)
+    {
+        $('#departments_div').html('');
+        var innerHtml = "<b>Department </b>";
+        innerHtml += '<select name="departments_listbox" >';
+        for(var i = 0; i < data.length; ++i)
+        {
+            innerHtml += '<option onclick="select_department(&quot;'+ data[i].name +'&quot;)">' + data[i].name + '</option>';
+        }
+
+        innerHtml += '</select>';
+
+        innerHtml += ' <b>School Name </b>';
+        innerHtml += '<input type="text" id="school_name" onkeyup="get_matching_schools()">';
+        $('#departments_div').append(innerHtml);
+    }
+
+    function show_locations()
+    {
+        var url = 'http://' + server_name + ':5002/departments'+ '?callback=?'
+        $.getJSON(url, null, departments_data_callback);
+    }
+
+    $( document ).ready(function() {
+        show_locations();
+    });
+
 </script>
 </head>   
 <body>
     <div id='find_school'>
         <h2>Find a School</h2>
-        <div class='radio_options'>
-        <input type="radio" name="find_schools" value="find_schools_by_name" checked="checked"/>by name</input>
-        <input type="radio" name="find_schools" value="find_schools_by_location"/>by location</input>
-        </div>
 
-        <div>
-            <input type="text" id="school_name" onkeyup='get_matching_schools()'>
+        <div id='locations_div'>
+           <div id='departments_div'>
+           </div>
         </div>
 
         <div id='display_schools'>

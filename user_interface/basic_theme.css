@@ -36,7 +36,9 @@ table td
     padding: 25px 50px;
     margin-right:auto;
     margin-bottom:8px;
-    border: 1px solid black;
+    border: 1px ;
+    border-style: solid;
+    border-color:#F4A460;
 }
 
 #display_schools 
@@ -45,41 +47,46 @@ table td
     margin-top:12px;
     margin-left:2px;
     margin-bottom:32px;
+    
 }
 
 .school_detail
 {
     margin-top:12px;
     margin-bottom:32px;
+    border: 0px solid black;
+    background-color:#F5DEB3;
+    padding: 20px 20px;
+    
 }
-
 
 #display_schools a
 {
     font-family: verdana,arial,sans-serif;
     font-size:22px;
-    color:#66CCFF;
     text-decoration: none;
-    
+    color:#F4A460;
+}
+
+#display_schools span
+{
+    display:inline-block;
+    width:120px;
 }
 
 #find_school h2
 {
-    color:#006699;
+    color:#E9967A;
 }
+
+
+
 
 #find_school input
 {
     margin-top:12px;
     color:gray;
     height: 32px;
-}
-
-.radio_options
-{
-    font-family: verdana,arial,sans-serif;
-    font-size:14px;
-    color:blue;
 }
 
 .counter
@@ -97,11 +104,12 @@ table td
 }
 
 body {
-    /*width: 820px;*/
-    background-color:white;
+    width: 820px;
+    background-color:#FFF8DC;
     margin-left:auto;
     margin-right:auto;
 }
+
 .wrapper {
     overflow: auto;
     margin: auto;
