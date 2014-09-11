@@ -6,7 +6,6 @@ from urllib2 import urlopen
 
 PORT = 5002
 
-
 def _retreive_school_names(starting_letters = 'a'):
     url = 'http://localhost:{}/matches/{}'.format(PORT, starting_letters)        
     raw_data = urlopen(url).read().decode('utf-8').strip()
@@ -20,6 +19,7 @@ def go_retrive(expected_result):
         assert(r == expected_result)
 
 class TestServer(TestCase):
+    ''' testing server '''
     def test_retrieval_from_multiple_threads(self):
         expected_result = _retreive_school_names()
         running_threads = []
