@@ -19,16 +19,17 @@ ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-
 select_sql = '''select school_id, school_name, grouping, departement , community, 
 city, address, telephone, neighborhood, grant_suggested_by, director_name, 
 year1_effective, year2_effective, year3_effective, year4_effective, year5_effective, 
-year6_effective, unknown_effective, total_effective 
+year6_effective, unknown_effective, total_effective,
+has_electricity , has_internet , has_restroom , classrooms_count , floors_count 
 from schools where school_name like '{}%' '''
 
 select_school_sql = '''select grouping, departement , community , city, neighborhood, grant_suggested_by, school_name,
     director_name, address, telephone, year1_effective, year2_effective, year3_effective,
-    year4_effective, year5_effective, year6_effective, unknown_effective, total_effective 
+    year4_effective, year5_effective, year6_effective, unknown_effective, total_effective,
+    has_electricity , has_internet , has_restroom , classrooms_count , floors_count 
     from schools where school_id = {}
     '''
 

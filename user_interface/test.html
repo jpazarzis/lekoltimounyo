@@ -6,11 +6,22 @@
 <script>
 
     var server_name = "localhost";
+
     var selected_department = '';
 
     function format_key_value(key, value)
     {
-        return '<span>' + key + '</span> <b>' + value + '</b> </br>';
+        return '<span>' + key + '</span> <input readonly type="text" size="50" value ="' +  value  + '"/> </br>';
+    }
+
+    function format_effectivity(key, value)
+    {
+        return '<span style="width:80px;">' + key + '</span> <input readonly type="text" maxlength="4" size="4"  value ="' +  value  + '"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    }
+
+    function make_button(name)
+    {
+        return '<button type="button"  style="float: right;" >' + name + '</button>';
     }
 
     function mycallback(data)
@@ -20,7 +31,9 @@
         for(var i = 0; i < data.length; ++i)
         {
             var div = '<div class="school_detail">';
-            div += '<a href="">' + data[i].name + '</a></br>';
+            div += '<a href="">' + data[i].name + '</a> ';
+            div +=  make_button("Edit") + make_button("Save");
+            div +=  '</br><hr>';
             div +=  format_key_value("Grouping", data[i].grouping);
             div +=  format_key_value("Address", data[i].address);
             div +=  format_key_value("Department", data[i].department);
@@ -30,16 +43,27 @@
             div +=  format_key_value("Neighborhood", data[i].neighborhood);
             div +=  format_key_value("Suggested by", data[i].grant_suggested_by);
             div +=  format_key_value("Director", data[i].director_name);
+            div +=  '</br><hr>';
+            div += "<h4>Facilities</h4>";
+            div +=  format_key_value("Has Elecricity", data[i].has_electricity);
+            div +=  format_key_value("Has Internet", data[i].has_internet);
+            div +=  format_key_value("Has restrooms", data[i].has_restroom);
+            div +=  format_key_value("Classrooms", data[i].classrooms_count);
+            div +=  format_key_value("Floors", data[i].floors_count);
+
+            div +=  '</br><hr>';
             div += "<h4>Effectivity</h4>";
-            div +=  format_key_value("Year 1", data[i].year1_effective);
-            div +=  format_key_value("Year 2", data[i].year2_effective);
-            div +=  format_key_value("Year 3", data[i].year3_effective);
-            div +=  format_key_value("Year 4", data[i].year4_effective);
-            div +=  format_key_value("Year 5", data[i].year5_effective);
-            div +=  format_key_value("Year 6", data[i].year6_effective);
-            div +=  format_key_value("Unknown", data[i].unknown_effective);
-            div +=  "</br>";
-            div +=  format_key_value("Total Effective", data[i].total_effective);
+            div +=  format_effectivity("Year 1", data[i].year1_effective);
+            div +=  format_effectivity("Year 2", data[i].year2_effective);
+            div +=  '</br>';
+            div +=  format_effectivity("Year 3", data[i].year3_effective);
+            div +=  format_effectivity("Year 4", data[i].year4_effective);
+            div +=  '</br>';
+            div +=  format_effectivity("Year 5", data[i].year5_effective);
+            div +=  format_effectivity("Year 6", data[i].year6_effective);
+            div +=  '</br>';
+            div +=  format_effectivity("Unknown", data[i].unknown_effective);
+            div +=  format_effectivity("Total Effective", data[i].total_effective);
             div += '</div>';
             $schools_div.append(div);
         }
