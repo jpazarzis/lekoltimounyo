@@ -14,6 +14,7 @@ def _retreive_school_names(starting_letters = 'a'):
     return json.loads(raw_data)
 
 def go_retrive(expected_result):
+    '''retrieves school names '''
     for i in range(10):
         r = _retreive_school_names()
         assert(r == expected_result)
